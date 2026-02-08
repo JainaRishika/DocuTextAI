@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Advanced Text Summarizer</title>
+
+  <link rel="stylesheet" href="/static/style.css" />
+  <link rel="stylesheet" href="/static/loader.css" />
+</head>
+<body>
+
+  <div class="container">
+    <h2>🧠 Advanced Text Summarizer</h2>
+
+    <textarea id="inputText" placeholder="Paste text here or upload a file..."></textarea>
+
+    <div class="controls">
+      <select id="model">
+        <option value="gemini">Gemini (Abstractive)</option>
+        <option value="textrank">TextRank (Extractive)</option>
+      </select>
+
+      <select id="length">
+        <option value="short">Short</option>
+        <option value="medium" selected>Medium</option>
+        <option value="detailed">Detailed</option>
+      </select>
+
+      <select id="tone">
+        <option value="neutral">Neutral</option>
+        <option value="simple">Simple</option>
+        <option value="academic">Academic</option>
+      </select>
+    </div>
+
+    <input type="file" id="fileInput" accept=".txt,.pdf" />
+
+    <button onclick="summarize()">Summarize</button>
+
+    <div id="loader" class="loader hidden"></div>
+
+    <h3>Summary</h3>
+    <div id="output"></div>
+
+    <div id="metrics" class="metrics"></div>
+  </div>
+
+<script>
+async function summarize() {
+  const text = document.getElementById("inputText").value;
+  const model = document.getElementById("model").value;
+  const length = document.getElementById("length").value;
+  const tone = document.getElementById("tone").value;
+  const file = document.getElementById("fileInput").files[0];
+
+  const loader = document.getElementById("loader");
+  const output = document.getElementById("output");
+  const metricsDiv = document.getElementById("metrics");
+
+  loader.classList.remove("hidden");
+  output.innerText = "";
+  metricsDiv.innerHTML = "";
+
+  const formData = new FormData();
+  formData.append("text", text);
+  formData.append("model", model);
+  formData.append("length", length);
+  formData.append("tone", tone);
+
+  if (file) {
+    formData.append("file", file);
+  }
+
+  const res = await fetch("/summarize", {
+    method: "POST",
+    body: formData
+  });
+
+  const data = await res.json();
+
+  loader.classList.add("hidden");
+  output.innerText = data.summary;
+
+  if (data.rouge) {
+    metricsDiv.innerHTML = `
+      <span>ROUGE-1: ${data.rouge["ROUGE-1"]}</span>
+      <span>ROUGE-2: ${data.rouge["ROUGE-2"]}</span>
+      <span>ROUGE-L: ${data.rouge["ROUGE-L"]}</span>
+    `;
+  }
+}
+</script>
+
+</body>
+</html>

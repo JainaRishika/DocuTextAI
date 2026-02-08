@@ -1,0 +1,7 @@
+flask
+python-dotenv
+google-genai
+sumy
+nltk
+rouge-score
+PyPDF2
