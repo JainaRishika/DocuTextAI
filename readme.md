@@ -1,3 +1,6 @@
+Live demo: 
+🌐 https://docutextai.onrender.com/
+
 # 🧠 Advanced Text Summarizer (NLP + ML)
 
 An advanced **text summarization web application** that combines **Large Language Models (Gemini)** with **classical Machine Learning (TextRank)**.  
@@ -135,7 +138,6 @@ Educational and productivity tools
 
 NLP experimentation and benchmarking
 
-https://docutextai.onrender.com/
 
 
 
