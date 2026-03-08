@@ -135,7 +135,7 @@ Educational and productivity tools
 
 NLP experimentation and benchmarking
 
-Website link: https://docutextai.onrender.com/
+https://docutextai.onrender.com/
 
 
 
